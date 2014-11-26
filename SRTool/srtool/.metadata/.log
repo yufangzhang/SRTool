@@ -1,0 +1,166 @@
+!SESSION 2014-11-25 21:28:02.366 -----------------------------------------------
+eclipse.buildId=debbuild
+java.version=1.7.0_67
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_GB
+Command-line arguments:  -data /homes/jy14/SRTool/srtool -os linux -ws gtk -arch x86_64
+
+!ENTRY com.vectrace.MercurialEclipse 2 0 2014-11-25 21:28:05.920
+!MESSAGE Batch size for status command not correct.
+
+!ENTRY org.eclipse.mylyn.tasks.core 1 0 2014-11-25 21:28:05.924
+!MESSAGE Migrating task repository credentials from keyring.
+
+!ENTRY com.vectrace.MercurialEclipse 1 0 2014-11-25 21:28:06.030
+!MESSAGE checking encoding (ascii)...
+checking Python lib (/usr/lib/python2.7)...
+checking installed modules (/usr/lib/python2.7/dist-packages/mercurial)...
+checking templates (/usr/share/mercurial/templates)...
+checking commit editor...
+checking username...
+no username found, using 'jy14@line32.doc.ic.ac.uk' instead
+no problems detected
+
+!ENTRY org.eclipse.ui 2 2 2014-11-25 21:28:26.330
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
+!SESSION 2014-11-25 21:41:37.313 -----------------------------------------------
+eclipse.buildId=debbuild
+java.version=1.7.0_67
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_GB
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.ui 4 4 2014-11-25 21:41:42.306
+!MESSAGE Could not create view: 'org.eclipse.ui.internal.introview'.
+
+!ENTRY org.eclipse.ui 4 0 2014-11-25 21:41:43.146
+!MESSAGE Problems occurred restoring workbench.
+!SUBENTRY 1 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 1 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 1 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 1 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.ui 4 0 2014-11-25 21:41:43.146
+!MESSAGE Unable to restore perspective: Workspace - Java.
+!SUBENTRY 2 org.eclipse.ui 0 0 2014-11-25 21:41:43.146
+!MESSAGE Problems occurred restoring perspective.
+!SUBENTRY 3 org.eclipse.ui 0 0 2014-11-25 21:41:43.146
+!MESSAGE 
+!SUBENTRY 2 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.ui 4 0 2014-11-25 21:41:43.146
+!MESSAGE Could not find view: org.eclipse.ui.internal.introview
+!SUBENTRY 1 unknown 0 0 2014-11-25 21:41:43.146
+!MESSAGE OK
+
+!ENTRY com.vectrace.MercurialEclipse 1 0 2014-11-25 21:41:43.874
+!MESSAGE checking encoding (ascii)...
+checking Python lib (/usr/lib/python2.7)...
+checking installed modules (/usr/lib/python2.7/dist-packages/mercurial)...
+checking templates (/usr/share/mercurial/templates)...
+checking commit editor...
+checking username...
+no username found, using 'jy14@line32.doc.ic.ac.uk' instead
+no problems detected
+
+!ENTRY org.eclipse.ui 2 2 2014-11-25 22:06:49.503
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
+!SESSION 2014-11-26 16:03:37.027 -----------------------------------------------
+eclipse.buildId=debbuild
+java.version=1.7.0_67
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_GB
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.ui 4 4 2014-11-26 16:03:50.223
+!MESSAGE Could not create view: 'org.eclipse.ui.internal.introview'.
+
+!ENTRY org.eclipse.ui 4 0 2014-11-26 16:03:55.545
+!MESSAGE Problems occurred restoring workbench.
+!SUBENTRY 1 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 1 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 1 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 1 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.ui 4 0 2014-11-26 16:03:55.546
+!MESSAGE Unable to restore perspective: Workspace - Java.
+!SUBENTRY 2 org.eclipse.ui 0 0 2014-11-26 16:03:55.546
+!MESSAGE Problems occurred restoring perspective.
+!SUBENTRY 3 org.eclipse.ui 0 0 2014-11-26 16:03:55.546
+!MESSAGE 
+!SUBENTRY 2 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 2 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.ui 4 0 2014-11-26 16:03:55.546
+!MESSAGE Could not find view: org.eclipse.ui.internal.introview
+!SUBENTRY 1 unknown 0 0 2014-11-26 16:03:55.546
+!MESSAGE OK
+
+!ENTRY com.vectrace.MercurialEclipse 1 0 2014-11-26 16:03:57.619
+!MESSAGE checking encoding (ascii)...
+checking Python lib (/usr/lib/python2.7)...
+checking installed modules (/usr/lib/python2.7/dist-packages/mercurial)...
+checking templates (/usr/share/mercurial/templates)...
+checking commit editor...
+checking username...
+no username found, using 'jy14@line27.doc.ic.ac.uk' instead
+no problems detected
+
+!ENTRY org.eclipse.ui 2 2 2014-11-26 16:05:27.921
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
+!SESSION 2014-11-26 16:06:56.705 -----------------------------------------------
+eclipse.buildId=debbuild
+java.version=1.7.0_67
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_GB
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.vectrace.MercurialEclipse 1 0 2014-11-26 16:07:03.992
+!MESSAGE checking encoding (ascii)...
+checking Python lib (/usr/lib/python2.7)...
+checking installed modules (/usr/lib/python2.7/dist-packages/mercurial)...
+checking templates (/usr/share/mercurial/templates)...
+checking commit editor...
+checking username...
+no username found, using 'jy14@line27.doc.ic.ac.uk' instead
+no problems detected
+
+!ENTRY org.eclipse.ui 2 2 2014-11-26 17:11:24.272
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)

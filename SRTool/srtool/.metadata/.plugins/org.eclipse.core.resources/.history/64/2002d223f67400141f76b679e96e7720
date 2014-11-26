@@ -1,0 +1,23 @@
+package srt.tool;
+
+import srt.ast.AssignStmt;
+import srt.ast.BinaryExpr;
+import srt.ast.DeclRef;
+import srt.ast.Expr;
+import srt.ast.visitor.impl.DefaultVisitor;
+import srt.parser.SimpleCLexer;
+
+public class AssignmentVisitor extends DefaultVisitor{
+
+	public AssignmentVisitor( ) {
+		super(true);
+	}
+	@Override
+	public Object visit(AssignStmt assignment) {
+		
+		Expr RHS=assignment.getRhs();
+		DeclRef LHS=assignment.getLhs();	
+		return new BinaryExpr(SimpleCLexer.ASSIGNMENT,assignment.getLhs(),RHS,assignment.getNodeInfo());
+	}
+
+}

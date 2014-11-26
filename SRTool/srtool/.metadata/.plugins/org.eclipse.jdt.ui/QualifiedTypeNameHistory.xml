@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="srt.ast.visitor.impl.DefaultVisitor"/>
+<fullyQualifiedTypeName name="srt.ast.Expr"/>
+<fullyQualifiedTypeName name="srt.ast.DeclRef"/>
+<fullyQualifiedTypeName name="srt.ast.BinaryExpr"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,17 @@
+package srt.tool;
+
+import srt.ast.AssignStmt;
+import srt.ast.visitor.impl.DefaultVisitor;
+
+public class AssignmentVisitor extends DefaultVisitor{
+
+	public AssignmentVisitor( ) {
+		super(true);
+	}
+	@Override
+	public Object visit(AssignStmt assignment) {
+		System.out.print("&&&");
+		return super.visit(assignment);
+	}
+
+}

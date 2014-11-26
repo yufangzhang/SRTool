@@ -1,0 +1,5 @@
+package srt.tool;
+
+public class AssignmentVisitor {
+
+}

@@ -50,6 +50,7 @@ public class BinaryExpr extends Expr {
 	public static final int EQUAL = SimpleCLexer.EQUAL;
 	public static final int RSHIFT = SimpleCLexer.RSHIFT;
 	public static final int SUBTRACT = SimpleCLexer.SUBTRACT;
+	public static final int ASSIGNMENT = SimpleCLexer.ASSIGNMENT;
 	
 	public static String getOperatorString(final int operator)
 	{

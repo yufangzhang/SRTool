@@ -67,6 +67,7 @@ public class StupidVisitor extends DefaultVisitor {
 
 		// return the block, which replaces the original ifStmt.
 		return block;
+		//把要拼凑的放到一个新的block里面
 	}
 
 	@Override

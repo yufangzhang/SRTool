@@ -3,6 +3,7 @@ package srt.tool;
 import java.io.IOException;
 
 import srt.ast.Program;
+import srt.ast.visitor.impl.AssignmentVisitor;
 import srt.ast.visitor.impl.PrinterVisitor;
 import srt.exec.ProcessExec;
 import srt.tool.exception.ProcessTimeoutException;
@@ -28,7 +29,7 @@ public class SRToolImpl implements SRTool {
 		}
 		program = (Program) new PredicationVisitor().visit(program);
 		program = (Program) new SSAVisitor().visit(program);
-
+		//program = (Program) new AssignmentVisitor().visit(program);
 		// Output the program as text after being transformed (for debugging).
 		if (clArgs.verbose) {
 			String programText = new PrinterVisitor().visit(program);
@@ -41,7 +42,7 @@ public class SRToolImpl implements SRTool {
 
 		// TODO: Convert constraints to SMTLIB String.
 		SMTLIBQueryBuilder builder = new SMTLIBQueryBuilder(ccv);
-		builder.buildQuery();
+		builder.buildQuery(ccv.variableNames,ccv.transitionNodes,ccv.propertyNodes);
 
 		String smtQuery = builder.getQuery();
 
