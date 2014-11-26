@@ -20,7 +20,7 @@ public class ExprToSmtlibVisitor extends DefaultVisitor {
 		switch(expr.getOperator())
 		{
 		case BinaryExpr.ADD:
-			operator = "(bvadd %s %s)";
+			operator = "(tobv32 (bvadd %s %s))";
 			break;
 		case BinaryExpr.BAND:
 			operator = "(bvand %s %s)";
@@ -92,7 +92,7 @@ public class ExprToSmtlibVisitor extends DefaultVisitor {
 
 	@Override
 	public String visit(IntLiteral intLiteral) {
-		return "(_ bv" + Integer.toString(intLiteral.getValue()) + " 32)";
+		return Integer.toString(intLiteral.getValue());
 	}
 
 	@Override

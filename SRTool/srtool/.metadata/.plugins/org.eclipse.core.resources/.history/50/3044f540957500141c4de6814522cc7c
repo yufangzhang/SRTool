@@ -23,9 +23,8 @@ public class SMTLIBQueryBuilder {
 		this.exprConverter = new ExprToSmtlibVisitor();
 	}
 
-	public void buildQuery(Set<String> variable) {
-		List<AssignStmt> transitionNodes = constraints.transitionNodes;
-		List<AssertStmt> propertyNodes = constraints.propertyNodes;
+	public void buildQuery(Set<String> variable,
+			List<AssignStmt> transitionNodes, List<AssertStmt> propertyNodes) {
 		StringBuilder query = new StringBuilder();
 		query.append("(set-logic QF_BV)\n"
 				+ "(define-fun tobv32 ((p Bool)) (_ BitVec 32) (ite p (_ bv1 32) (_ bv0 32)))\n");
@@ -41,15 +40,16 @@ public class SMTLIBQueryBuilder {
 		}
 		// Add constraints
 		for (AssignStmt a : transitionNodes) {
-			String lhs = a.getLhs().getName();
-			String rhs = exprConverter.visit(a.getRhs());
-			String c = "(assert (= " + lhs + " " + rhs + ")"
+			BinaryExpr binary = new BinaryExpr(SimpleCLexer.EQUAL, a.getLhs(),
+					a.getRhs(), a.getNodeInfo());
+			String c = "(assert (tobool" + new ExprToSmtlibVisitor().visit(binary)
 					+ ")";
 			query.append(c+ "\n");
 		}
 
 		for (AssertStmt e : propertyNodes) {
-			String t = "(assert " + exprConverter.visit(e.getCondition()) + ")";
+			String t = "(assert "
+					+ new ExprToSmtlibVisitor().visit(e.getCondition()) + ")";
 			query.append(t + "\n");
 		}
 		query.append("(check-sat)\n");

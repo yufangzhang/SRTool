@@ -42,7 +42,7 @@ public class SRToolImpl implements SRTool {
 
 		// TODO: Convert constraints to SMTLIB String.
 		SMTLIBQueryBuilder builder = new SMTLIBQueryBuilder(ccv);
-		builder.buildQuery(ccv.variableNames);
+		builder.buildQuery(ccv.variableNames,ccv.transitionNodes,ccv.propertyNodes);
 
 		String smtQuery = builder.getQuery();
 

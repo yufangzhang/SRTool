@@ -41,15 +41,16 @@ public class SMTLIBQueryBuilder {
 		}
 		// Add constraints
 		for (AssignStmt a : transitionNodes) {
-			String lhs = a.getLhs().getName();
-			String rhs = exprConverter.visit(a.getRhs());
-			String c = "(assert (= " + lhs + " " + rhs + ")"
+			BinaryExpr binary = new BinaryExpr(SimpleCLexer.EQUAL, a.getLhs(),
+					a.getRhs(), a.getNodeInfo());
+			String c = "(assert " + new ExprToSmtlibVisitor().visit(binary)
 					+ ")";
 			query.append(c+ "\n");
 		}
 
 		for (AssertStmt e : propertyNodes) {
-			String t = "(assert " + exprConverter.visit(e.getCondition()) + ")";
+			String t = "(assert "
+					+ new ExprToSmtlibVisitor().visit(e.getCondition()) + ")";
 			query.append(t + "\n");
 		}
 		query.append("(check-sat)\n");

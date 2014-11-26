@@ -43,7 +43,9 @@ public class SMTLIBQueryBuilder {
 		for (AssignStmt a : transitionNodes) {
 			String lhs = a.getLhs().getName();
 			String rhs = exprConverter.visit(a.getRhs());
-			String c = "(assert (= " + lhs + " " + rhs + ")"
+			BinaryExpr binary = new BinaryExpr(SimpleCLexer.EQUAL, lhs,
+					rhs, a.getNodeInfo());
+			String c = "(assert " + exprConverter.visit(binary)
 					+ ")";
 			query.append(c+ "\n");
 		}
