@@ -3,9 +3,7 @@ package srt.tool;
 import java.util.HashMap;
 import java.util.Map;
 
-import srt.ast.AssignStmt;
-import srt.ast.Decl;
-import srt.ast.DeclRef;
+import srt.ast.*;
 import srt.ast.visitor.impl.DefaultVisitor;
 
 public class SSAVisitor extends DefaultVisitor {
