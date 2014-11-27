@@ -23,7 +23,8 @@ public class SMTLIBQueryBuilder {
 		this.exprConverter = new ExprToSmtlibVisitor();
 	}
 
-	public void buildQuery(Set<String> variable) {
+	public void buildQuery() {
+		Set<String> variable = constraints.variableNames;
 		List<AssignStmt> transitionNodes = constraints.transitionNodes;
 		List<AssertStmt> propertyNodes = constraints.propertyNodes;
 		StringBuilder query = new StringBuilder();
@@ -48,11 +49,33 @@ public class SMTLIBQueryBuilder {
 			query.append(c+ "\n");
 		}
 
-		for (AssertStmt e : propertyNodes) {
-			String t = "(assert " + exprConverter.visit(e.getCondition()) + ")";
-			query.append(t + "\n");
+		// Add assertion checks.
+		int currentPropertyIndex = 0;
+		for (AssertStmt assertStmt : constraints.propertyNodes) {
+			query.append("(define-fun prop" + currentPropertyIndex + " () Bool (not " + exprConverter.visit(assertStmt.getCondition()) + "))\n");
+			currentPropertyIndex++;
 		}
+		
+		// Verify properties.
+		query.append("(assert ");
+		for (int i = 0; i < currentPropertyIndex; i++) {
+			query.append("(or prop" + i + "");
+		}		
+		for (int i = 0; i <= currentPropertyIndex; i++) {
+			query.append(")");
+		}		
+		query.append("\n");
+		
+		// Check.
 		query.append("(check-sat)\n");
+		query.append("(get-value (");
+		for (int i = 0; i < currentPropertyIndex -1; i++) {
+			query.append("prop" + i + " ");
+			}
+		}
+		if (currentPropertyIndex > 0) query.append("prop" + currentPropertyIndex -1);
+		query.append("))\n");
+		
 		queryString = query.toString();
 	}
 
