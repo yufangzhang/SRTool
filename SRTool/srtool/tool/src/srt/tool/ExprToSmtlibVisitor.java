@@ -60,16 +60,16 @@ public class ExprToSmtlibVisitor extends DefaultVisitor {
 			operator = "(tobv32 (or (tobool %s) (tobool %s)))";
 			break;
 		case BinaryExpr.GEQ:
-            operator = "(bvsge %s %s)";
+            operator = "(tobv32(bvsge %s %s))";
             break;
         case BinaryExpr.GT:
-            operator = "(bvsgt %s %s)";
+            operator = "(tobv32(bvsgt %s %s))";
             break;
         case BinaryExpr.LEQ:
-            operator = "(bvsle %s %s)";
+            operator = "(tobv32(bvsle %s %s))";
             break;
         case BinaryExpr.LT:
-            operator = "(bvslt %s %s)";
+            operator = "(tobv32(bvslt %s %s))";
             break;
         case BinaryExpr.NEQUAL:
             operator = "(tobv32 (not (= %s %s)))";
