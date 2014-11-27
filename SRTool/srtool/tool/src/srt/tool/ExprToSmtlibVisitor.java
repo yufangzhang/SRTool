@@ -72,10 +72,10 @@ public class ExprToSmtlibVisitor extends DefaultVisitor {
             operator = "(bvslt %s %s)";
             break;
         case BinaryExpr.NEQUAL:
-            operator = "(not (= %s %s))";
+            operator = "(tobv32 (not (= %s %s)))";
             break;
         case BinaryExpr.EQUAL:
-            operator = "(= %s %s)";
+            operator = "(tobv32 (= %s %s))";
 			break;
 			default:
 				throw new IllegalArgumentException("Invalid binary operator");

@@ -29,7 +29,8 @@ public class SMTLIBQueryBuilder {
 		List<AssertStmt> propertyNodes = constraints.propertyNodes;
 		StringBuilder query = new StringBuilder();
 		query.append("(set-logic QF_BV)\n"
-				+ "(define-fun tobv32 ((p Bool)) (_ BitVec 32) (ite p (_ bv1 32) (_ bv0 32)))\n");
+				+ "(define-fun tobv32 ((p Bool)) (_ BitVec 32) (ite p (_ bv1 32) (_ bv0 32)))\n"
+				+ "(define-fun tobool ((p (_ BitVec 32))) (Bool) (not (= p (_ bv0 32))))\n");
 		// TODO: Define more functions above (for convenience), as needed.
 
 		// TODO: Declare variables, add constraints, add properties to check
@@ -52,7 +53,7 @@ public class SMTLIBQueryBuilder {
 		// Add assertion checks.
 		int currentPropertyIndex = 0;
 		for (AssertStmt assertStmt : constraints.propertyNodes) {
-			query.append("(define-fun prop" + currentPropertyIndex + " () Bool (not " + exprConverter.visit(assertStmt.getCondition()) + "))\n");
+			query.append("(define-fun prop" + currentPropertyIndex + " () Bool (not (tobool " + exprConverter.visit(assertStmt.getCondition()) + "))\n");
 			currentPropertyIndex++;
 		}
 		
