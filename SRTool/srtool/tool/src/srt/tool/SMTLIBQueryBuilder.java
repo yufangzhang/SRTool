@@ -57,9 +57,9 @@ public class SMTLIBQueryBuilder {
 		}
 		
 		// Verify properties.
-		query.append("(assert ");
+		query.append("(assert");
 		for (int i = 0; i < currentPropertyIndex; i++) {
-			query.append("(or prop" + i + "");
+			query.append(" (or prop" + i);
 		}		
 		for (int i = 0; i <= currentPropertyIndex; i++) {
 			query.append(")");
