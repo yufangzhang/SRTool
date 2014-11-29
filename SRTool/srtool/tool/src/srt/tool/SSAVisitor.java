@@ -19,14 +19,14 @@ public class SSAVisitor extends DefaultVisitor {
 		String name = decl.getName();
 		index.put(name, 0);
 		String SSAName = name+"$"+index.get(name);
-		return new Decl(SSAName, decl.getType(), decl.getnodeInfo());
+		return new Decl(SSAName, decl.getType(), decl.getNodeInfo());
 	}
 
 	@Override
 	public Object visit(DeclRef declRef) {
 		String name = declRef.getName();
 		String SSAName = name+"$"+index.get(name);
-		return new DeclRef(SSAName, declRef.getnodeInfo());
+		return new DeclRef(SSAName, declRef.getNodeInfo());
 	}
 
 	@Override
@@ -34,9 +34,9 @@ public class SSAVisitor extends DefaultVisitor {
 		Expr expr  = (Expr) super.visit(assignment.getRhs());
 		String lhsName = assignment.getLhs().getName();
 		int i = index.get(lhsName) + 1;
-        index.put(name, i);
+        index.put(lhsName, i);
 		DeclRef declRef  = (DeclRef) this.visit(assignment.getLhs());
-		return new AssignStmt(declRef, expr, assignment);
+		return new AssignStmt(declRef, expr);
 	}
 
 }

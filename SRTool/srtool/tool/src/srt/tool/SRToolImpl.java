@@ -45,7 +45,7 @@ public class SRToolImpl implements SRTool {
 		builder.buildQuery();
 
 		String smtQuery = builder.getQuery();
-
+		
 		// Output the query for debugging
 		if (clArgs.verbose) {
 			System.out.println(smtQuery);

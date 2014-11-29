@@ -72,9 +72,8 @@ public class SMTLIBQueryBuilder {
 		query.append("(get-value (");
 		for (int i = 0; i < currentPropertyIndex -1; i++) {
 			query.append("prop" + i + " ");
-			}
 		}
-		if (currentPropertyIndex > 0) query.append("prop" + currentPropertyIndex -1);
+		if (currentPropertyIndex > 0) query.append("prop" + (currentPropertyIndex -1));
 		query.append("))\n");
 		
 		queryString = query.toString();
