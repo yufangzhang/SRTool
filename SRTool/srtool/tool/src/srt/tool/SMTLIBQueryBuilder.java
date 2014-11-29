@@ -53,7 +53,7 @@ public class SMTLIBQueryBuilder {
 		// Add assertion checks.
 		int currentPropertyIndex = 0;
 		for (AssertStmt assertStmt : constraints.propertyNodes) {
-			query.append("(define-fun prop" + currentPropertyIndex + " () Bool (not (tobool " + exprConverter.visit(assertStmt.getCondition()) + ")))\n");
+			query.append("(define-fun prop" + currentPropertyIndex + " () (Bool) (not (tobool " + exprConverter.visit(assertStmt.getCondition()) + ")))\n");
 			currentPropertyIndex++;
 		}
 		
@@ -61,7 +61,10 @@ public class SMTLIBQueryBuilder {
 		query.append("(assert");
 		for (int i = 0; i < currentPropertyIndex; i++) {
 			query.append(" (or prop" + i);
-		}		
+		}	
+		if (currentPropertyIndex ==1){
+			query.append(" false");
+		}
 		for (int i = 0; i <= currentPropertyIndex; i++) {
 			query.append(")");
 		}		
