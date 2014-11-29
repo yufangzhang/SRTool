@@ -62,9 +62,6 @@ public class SMTLIBQueryBuilder {
 		for (int i = 0; i < currentPropertyIndex; i++) {
 			query.append(" (or prop" + i);
 		}	
-		if (currentPropertyIndex ==1){
-			query.append(" false");
-		}
 		for (int i = 0; i <= currentPropertyIndex; i++) {
 			query.append(")");
 		}		
