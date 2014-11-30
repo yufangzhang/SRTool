@@ -30,7 +30,7 @@ public class PredicationVisitor extends DefaultVisitor {
 		} else {
 			variableChars.setCharAt(variableChars.length()-1, (char) (lastChar+1));
 		}
-		freshVariable = variableChars.toString()
+		freshVariable = variableChars.toString();
 		return freshVariable;
 	}
 	
