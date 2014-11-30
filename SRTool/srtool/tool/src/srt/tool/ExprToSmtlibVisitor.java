@@ -109,10 +109,13 @@ public class ExprToSmtlibVisitor extends DefaultVisitor {
 			operator = "(bvneg %s)";
 			break;
 		case UnaryExpr.UPLUS:
+			operator = "(%s)";
 			break;
 		case UnaryExpr.LNOT:
+			operator = "(tobv32 (not (tobool %s)))";
 			break;
 		case UnaryExpr.BNOT:
+			operator = "(bvnot %s)";
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid binary operator");
