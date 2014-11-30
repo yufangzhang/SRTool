@@ -10,7 +10,6 @@ import srt.ast.visitor.impl.DefaultVisitor;
 
 public class PredicationVisitor extends DefaultVisitor {
 
-	private static final String DEFAULT_VARIABLE_TYPE = "String";
 	private String freshVariable;
 	private Expr parentPredicate;
 	private Expr globalPredicate;
@@ -31,7 +30,8 @@ public class PredicationVisitor extends DefaultVisitor {
 		} else {
 			variableChars.setCharAt(variableChars.length()-1, (char) (lastChar+1));
 		}
-		return variableChars.toString();
+		freshVariable = variableChars.toString()
+		return freshVariable;
 	}
 	
 	public Expr gAndP(){
@@ -48,9 +48,9 @@ public class PredicationVisitor extends DefaultVisitor {
 		Expr ifExpr = ifStmt.getCondition();
 		DeclRef q = new DeclRef(generateFreshVariable());
         DeclRef r = new DeclRef(generateFreshVariable());
-        Decl declareQ = new Decl(q.getName(), DEFAULT_VARIABLE_TYPE);
+        Decl declareQ = new Decl(q.getName(), "int");
 		stmts.add(declareQ);
-        Decl declareR = new Decl(r.getName(), DEFAULT_VARIABLE_TYPE);
+        Decl declareR = new Decl(r.getName(), "int");
 		stmts.add(declareR);
 		BinaryExpr qExpression = new BinaryExpr(BinaryExpr.LAND, parentPredicate, ifExpr);
 		BinaryExpr rExpression = new BinaryExpr(BinaryExpr.LAND, parentPredicate, new UnaryExpr(UnaryExpr.LNOT, ifExpr));
@@ -75,14 +75,14 @@ public class PredicationVisitor extends DefaultVisitor {
 		// assert(G && P => E)
 		Expr lhs = new UnaryExpr(UnaryExpr.LNOT, gAndP());
 		Expr rhs = assertStmt.getCondition();
-		return super.visit(new AssertStmt(new BinaryExpr(BinaryExpr.LOR, lhs, rhs)));
+		return super.visit(new AssertStmt(new BinaryExpr(BinaryExpr.LOR, lhs, rhs), assertStmt.getNodeInfo()));
 	}
 
 	@Override
 	public Object visit(AssignStmt assignment) {
 		// x = (G && P) ? E : x;
 		TernaryExpr ternaryExpression = new TernaryExpr(gAndP(), assignment.getRhs(), assignment.getLhs());
-		return super.visit(new AssignStmt(assignment.getLhs(), ternaryExpression));
+		return super.visit(new AssignStmt(assignment.getLhs(), ternaryExpression, assignment.getNodeInfo()));
 	}
 
 	@Override
