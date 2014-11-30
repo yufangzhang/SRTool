@@ -1,20 +1,23 @@
 package srt.tool;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack
+import java.util.Stack;
 
 import srt.ast.*;
+import srt.ast.visitor.impl.DefaultVisitor;
 
 public class PredicationVisitor extends DefaultVisitor {
 
+	private static final String DEFAULT_VARIABLE_TYPE = "String";
 	private String freshVariable;
-	private DeclRef parentPredicate;
+	private Expr parentPredicate;
 	private Expr globalPredicate;
 
 	public PredicationVisitor() {
 		super(true);
-		freshVariable = "$A"
+		freshVariable = "$A";
 		//initialized to "G" which is true
 		globalPredicate = new IntLiteral(1);
 		parentPredicate = globalPredicate;
@@ -26,7 +29,7 @@ public class PredicationVisitor extends DefaultVisitor {
 		if (lastChar == 'Z'){
 			variableChars.append('A');
 		} else {
-			variableChars.setCharAt(variableChars.length()-1, (char) (lastChar+1))
+			variableChars.setCharAt(variableChars.length()-1, (char) (lastChar+1));
 		}
 		return variableChars.toString();
 	}
@@ -37,6 +40,10 @@ public class PredicationVisitor extends DefaultVisitor {
 	
 	@Override
 	public Object visit(IfStmt ifStmt) {
+		//Q = P && E;
+		//R = P && !E;
+		//Pred(S, Q);
+		//Pred(T, R);
 		List<Stmt> stmts = new LinkedList<Stmt>();
 		Expr ifExpr = ifStmt.getCondition();
 		DeclRef q = new DeclRef(generateFreshVariable());
@@ -45,13 +52,13 @@ public class PredicationVisitor extends DefaultVisitor {
 		stmts.add(declareQ);
         Decl declareR = new Decl(r.getName(), DEFAULT_VARIABLE_TYPE);
 		stmts.add(declareR);
-		qExpression = new BinaryExpr(BinaryExpr.LAND, parentPredicate, ifExpr);
-		rExpression = new BinaryExpr(BinaryExpr.LAND, parentPredicate, new UnaryExpr(UnaryExpr.LNOT, ifExpr));
+		BinaryExpr qExpression = new BinaryExpr(BinaryExpr.LAND, parentPredicate, ifExpr);
+		BinaryExpr rExpression = new BinaryExpr(BinaryExpr.LAND, parentPredicate, new UnaryExpr(UnaryExpr.LNOT, ifExpr));
 		AssignStmt assignQ = new AssignStmt(q, qExpression);
 		stmts.add(assignQ);
         AssignStmt assignR = new AssignStmt(r, rExpression);
 		stmts.add(assignR);
-		DeclRef tempParentPredicate = parentPredicate;
+		Expr tempParentPredicate = parentPredicate;
 		parentPredicate = q;
 		Stmt thenStmt = (Stmt) visit(ifStmt.getThenStmt());
 		stmts.add(thenStmt);
@@ -60,7 +67,7 @@ public class PredicationVisitor extends DefaultVisitor {
 		stmts.add(elseStmt);
 		parentPredicate = tempParentPredicate;
 				
-		return super.visit((new BlockStmt(stmts,ifStmt));
+		return super.visit((new BlockStmt(stmts,ifStmt.getNodeInfo())));
 	}
 
 	@Override
@@ -68,14 +75,14 @@ public class PredicationVisitor extends DefaultVisitor {
 		// assert(G && P => E)
 		Expr lhs = new UnaryExpr(UnaryExpr.LNOT, gAndP());
 		Expr rhs = assertStmt.getCondition();
-		return super.visit(new AssertStmt(new BinaryExpr(BinaryExpr.LOR, lhs, rhs), assertStmt));
+		return super.visit(new AssertStmt(new BinaryExpr(BinaryExpr.LOR, lhs, rhs)));
 	}
 
 	@Override
 	public Object visit(AssignStmt assignment) {
 		// x = (G && P) ? E : x;
 		TernaryExpr ternaryExpression = new TernaryExpr(gAndP(), assignment.getRhs(), assignment.getLhs());
-		return super.visit(new AssignStmt(assignment.getLhs(), ternaryExpression, assignment));
+		return super.visit(new AssignStmt(assignment.getLhs(), ternaryExpression));
 	}
 
 	@Override
@@ -89,7 +96,7 @@ public class PredicationVisitor extends DefaultVisitor {
 		AssignStmt assignStatement = new AssignStmt(freshVar, biExpression);
 		globalPredicate = new BinaryExpr(BinaryExpr.LAND, globalPredicate, freshVar);
 		//not sure do i need an assignstatement statement for newG in Block statement
-		return super.visit(new BlockStmt(new Stmt[] {declFreshVar, assignStatement}, assumeStmt));
+		return super.visit(new BlockStmt(new Stmt[] {declFreshVar, assignStatement}, assumeStmt.getNodeInfo()));
 	}
 
 	@Override
@@ -98,9 +105,9 @@ public class PredicationVisitor extends DefaultVisitor {
 		DeclRef v = havocStmt.getVariable();
 		DeclRef h = new DeclRef(generateFreshVariable());
 		Stmt declH = new Decl(h.getName(), "int");
-		TernaryExpr ternaryExpression = new TernaryExpr(gAndP(), h, v)
+		TernaryExpr ternaryExpression = new TernaryExpr(gAndP(), h, v);
 		Stmt e = new AssignStmt(v, ternaryExpression);
-		return super.visit(new BlockStmt(new Stmt[] { declH, e}, havocStmt));
+		return super.visit(new BlockStmt(new Stmt[] { declH, e}, havocStmt.getNodeInfo()));
 	}
 
 }
