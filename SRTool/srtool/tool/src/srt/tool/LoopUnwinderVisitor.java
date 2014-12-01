@@ -6,10 +6,12 @@ import srt.ast.AssertStmt;
 import srt.ast.AssumeStmt;
 import srt.ast.BlockStmt;
 import srt.ast.EmptyStmt;
+import srt.ast.Expr;
 import srt.ast.IfStmt;
-import srt.ast.IntLiteral;
 import srt.ast.Invariant;
+import srt.ast.InvariantList;
 import srt.ast.Stmt;
+import srt.ast.UnaryExpr;
 import srt.ast.WhileStmt;
 import srt.ast.visitor.impl.DefaultVisitor;
 
@@ -26,55 +28,57 @@ public class LoopUnwinderVisitor extends DefaultVisitor {
 
 	@Override
 	public Object visit(WhileStmt whileStmt) {
-		int bound = defaultUnwindBound;
-		boolean defaultIsUsed = true;
-		if (whileStmt.getBound() != null) {
-			bound = whileStmt.getBound().getValue();
-			defaultIsUsed = false;
-		}
-		
-		Stmt Body = whileStmt.getBody();
-		
-		List<Invariant> invariants = whileStmt.getInvariantList().getInvariants();
-		
-		List<Stmt> invariantList = new ArrayList<>();
-		
-		//invariants
-		for (Invariant invariant : invariants) {
-			AssertStmt assertStmt = new AssertStmt(invariant.getExpr());
-			invariantList.add(assertStmt);
-		}
-		
-		
-		Stmt endIfBranch;
-		
-		
-		if (defaultIsUsed && !unsound) {
-			endIfBranch = new BlockStmt(new Stmt[] {
-					new AssertStmt(new IntLiteral(0)),
-					new AssumeStmt(new IntLiteral(0)) });
-		} else {
-			endIfBranch = new BlockStmt(new Stmt[] { new AssumeStmt(
-					new IntLiteral(0)) });
-		}
-		
-		IfStmt ifStmt = new IfStmt(whileStmt.getCondition(), endIfBranch,
-				new EmptyStmt());
-		
-		for (int i = 0; i < bound; i++) {
-			List<Stmt> statements = new ArrayList<Stmt>();
-			statements.addAll(((BlockStmt) Body).getStmtList()
-					.getStatements());
-			statements.addAll(invariantList);
-			statements.add(ifStmt);
-			
-			Stmt ifBody = new BlockStmt(statements);
-			
-			ifStmt = new IfStmt(whileStmt.getCondition(), ifBody, new EmptyStmt());
-		}
-		List<Stmt> unwindLoop = new ArrayList<Stmt>();
-		unwindLoop.addAll(invariantList);
-		unwindLoop.add(ifStmt);
-		return new BlockStmt(unwindLoop);
+		Stmt whileBody= whileStmt.getBody();
+		List<Stmt> statements = new ArrayList<Stmt>();
+		List<Stmt> AssertionAndAssume = generateUnwindingAssertionAndAssume(whileStmt);
+		List<Stmt> invariantsAssertions  = generateAssertionsFromInvariants(whileStmt);
+		statements.addAll(AssertionAndAssume);
+		 int bound = 0;
+		 if(whileStmt.getBound()==null)
+			 bound=defaultUnwindBound;
+		 else
+			 bound=whileStmt.getBound().getValue();
+		 if(bound==0)
+		 {
+			 return new BlockStmt(statements);
+		 }
+		 for(int i=0;i<bound;i++)
+		 {
+			 List<Stmt> newStatements = new ArrayList<Stmt>();
+			 newStatements.addAll(invariantsAssertions);
+			 newStatements.add(whileStmt.getBody());
+			 newStatements.addAll(statements);
+			 IfStmt newIf=new IfStmt(whileStmt.getCondition(), new BlockStmt(newStatements), new EmptyStmt());
+			 statements=new ArrayList<Stmt>();
+			 statements.add(newIf);
+		 }
+		return  super.visit(new BlockStmt(statements));
 	}
+
+	// Generates the unwinding assertions and assume
+	private List<Stmt> generateUnwindingAssertionAndAssume(WhileStmt whileStmt) {
+		AssertStmt assertion = new AssertStmt(new UnaryExpr(UnaryExpr.LNOT,
+				whileStmt.getCondition()), whileStmt.getCondition()
+				.getNodeInfo());
+		AssumeStmt assume = new AssumeStmt(new UnaryExpr(UnaryExpr.LNOT,
+				whileStmt.getCondition()), whileStmt.getCondition()
+				.getNodeInfo());
+		List<Stmt> statements = new ArrayList<Stmt>();
+		if (unsound) {
+			statements.add(assertion);
+			statements.add(assume);
+		} else {
+			statements.add(assume);
+		}
+		return statements;
+	}
+	private List<Stmt> generateAssertionsFromInvariants(WhileStmt whileStmt){
+        List<Stmt> statements = new ArrayList<Stmt>();
+        List<Invariant> invariantsList = whileStmt.getInvariantList().getInvariants();
+        for (Invariant expression: invariantsList) {
+            Stmt assertStmt = new AssertStmt(expression.getExpr(), expression.getNodeInfo());
+            statements.add(assertStmt);
+        }
+        return statements;
+    }
 }

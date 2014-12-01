@@ -3,14 +3,9 @@ package srt.tool;
 import java.util.List;
 import java.util.Set;
 
-import com.sun.xml.internal.ws.policy.AssertionSet;
 
 import srt.ast.AssertStmt;
 import srt.ast.AssignStmt;
-import srt.ast.BinaryExpr;
-import srt.ast.Expr;
-import srt.parser.SimpleCLexer;
-import sun.org.mozilla.javascript.internal.ast.Assignment;
 
 public class SMTLIBQueryBuilder {
 
