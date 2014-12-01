@@ -31,11 +31,12 @@ public class LoopAbstractionVisitor extends DefaultVisitor {
 	@Override
 	public Object visit(WhileStmt whileStmt) {
 		List<Stmt> stmts = new LinkedList<Stmt>();
-		// get loop components
+		//get invariant
 		List<Invariant> invariants = whileStmt.getInvariantList().getInvariants();
-		List<Expr> invariantExprs = new ArrayList<>();
+		List<Expr> invariantExprs = new ArrayList<Expr>();
 		List<Stmt> AssertStmts = new LinkedList<Stmt>();
-		//invariant expression
+		
+		//assertion
 		for (Invariant invariant : invariants) {
 			Expr invariantexpr = invariant.getExpr();
 			invariantExprs.add(invariantexpr);
@@ -44,42 +45,55 @@ public class LoopAbstractionVisitor extends DefaultVisitor {
 			stmts.addAll(AssertStmts);
 		}
 		
-		Expr loopCondition = whileStmt.getCondition();
-		Stmt loopBody = whileStmt.getBody();
+		Expr whileCondition = whileStmt.getCondition();
+		Stmt whileBody = whileStmt.getBody();
 		
-		           	
-    	Set<DeclRef> modSet = new HashSet<DeclRef>();
-
-    	AssignStmt modAssignStmt = (AssignStmt) loopBody;
-    	DeclRef lhs = modAssignStmt.getLhs();
-    	modSet.add(lhs);
-    	this.visitChildren(modAssignStmt);
-    	for (DeclRef var : modSet) {
+		//get the set of modified variables
+		ModSetVisitor modSetVisitor = new ModSetVisitor();
+		modSetVisitor.visit(whileStmt.getBody());
+		Set<DeclRef> modSet = modSetVisitor.getModSet();
+		
+		//havoc modified variables 
+		for (DeclRef var : modSet) {
 			stmts.add(new HavocStmt(var));
 		}
 		
+		
 		List<Stmt> AssumeStmts = new LinkedList<Stmt>();
-		for (Invariant e : invariants) {
-			AssumeStmts.add(new AssumeStmt(e.getExpr()));
+		for (Invariant invariant : invariants) {
+			AssumeStmts.add(new AssumeStmt(invariant.getExpr()));
 		}
 		stmts.addAll(AssumeStmts);
 		
-		// create if then body
-		List<Stmt> ifStmtsBody = new LinkedList<Stmt>();
-		// visit loop body
-		ifStmtsBody.add((Stmt) visit(loopBody));
+		List<Stmt> ifStmts = new LinkedList<Stmt>();
+		ifStmts.add((Stmt) visit(whileBody));
+		ifStmts.addAll(AssertStmts);
+		ifStmts.add(new AssumeStmt(new IntLiteral(0)));
 		
-		// insert assert statements to check that loop invariant holds at end of body
-		ifStmtsBody.addAll(AssertStmts);
-		// insert assume(false) statement to block further loop execution
-		ifStmtsBody.add(new AssumeStmt(new IntLiteral(0)));
-		
-		BlockStmt newIfThenBody = new BlockStmt(ifStmtsBody);
-		Stmt ifStmt = new IfStmt(loopCondition, newIfThenBody, null);
+		BlockStmt newCondition = new BlockStmt(ifStmts);
+		Stmt ifStmt = new IfStmt(whileCondition, newCondition, null);
 		
 		stmts.add(ifStmt);
 		
 		return new BlockStmt(stmts, whileStmt.getNodeInfo());
+	}
+	
+	private class ModSetVisitor extends DefaultVisitor {
+		// get modified variables 
+		private Set<DeclRef> modSet;
+		public ModSetVisitor() {
+			super(true);
+			this.modSet = new HashSet<DeclRef>();
+		}
+		@Override
+		public Object visit(AssignStmt assignment) {
+			DeclRef lhs = assignment.getLhs();
+			modSet.add(lhs);
+			return visitChildren(assignment);
+		}
+		protected Set<DeclRef> getModSet() {
+			return this.modSet;
+		}
 	}
 
 }
